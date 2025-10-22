@@ -1,0 +1,226 @@
+/* 全局設定 */
+body {
+    font-family: "Noto Sans TC", "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #f8efd4, #f6d6ad);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #444;
+}
+
+#welcomePopup {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+#welcomePopup.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#welcomePopup .popup-box {
+    background: #fffefb;
+    border-radius: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    position: relative;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    animation: fadeInScale 0.5s ease;
+}
+
+#welcomePopup h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#welcomePopup p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ❌ 關閉按鈕 */
+#welcomePopup #closeWelcome {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+#welcomePopup #closeWelcome:hover {
+    color: #e74c3c;
+}
+
+/* 彈出動畫 */
+@keyframes fadeInScale {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 大廳與遊戲容器 */
+#lobby, #main {
+    background: #fffdf8;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* 說明文字 */
+.introduce {
+    background-color: #fff7e6;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    text-align: left;
+    line-height: 1.6;
+}
+
+/* 按鈕 */
+button {
+    background-color: #ffb347;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #fff;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #ff9800;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* 輸入區 */
+#userInput {
+    width: 80%;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 18px;
+    transition: border-color 0.3s;
+}
+
+#userInput:focus {
+    border-color: #ffa726;
+    outline: none;
+}
+
+/* 紀錄區 */
+#record {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fffdfa;
+    padding: 10px;
+    margin-bottom: 15px;
+    text-align: left;
+    font-family: monospace;
+}
+
+/* 滾動條樣式 */
+#record::-webkit-scrollbar {
+    width: 6px;
+}
+#record::-webkit-scrollbar-thumb {
+    background: #ffc977;
+    border-radius: 4px;
+}
+
+/* 成功提示彈窗 */
+#successPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+}
+
+#successPopup.active {
+    visibility: visible;
+}
+
+#successPopup .popup-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+#successPopup h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+/* ===== Footer 區塊 ===== */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(90deg, #ffe3a3, #ffcf81);
+    color: #4b3b1f;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+    user-select: none;
+    z-index: 5;
+}
+
+/* footer字 */
+footer p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* auto 調整大小(字體) */
+@media (max-width: 480px) {
+    footer {
+        font-size: 12px;
+        padding: 8px 0;
+    }
+}

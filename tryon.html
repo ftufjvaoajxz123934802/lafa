@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>1A2B</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+
+        <div id="welcomePopup">
+            <div class="popup-box">
+                <button id="closeWelcome">✖</button>
+                <h2>貼心體醒與注意事項</h2>
+                <p id="welcomeText">
+                    此為Beta版本測試，並非完整網頁，只暫時設計一個遊戲，更大的專案仍持續開發中。(預計會花上挺長時間的，為解謎元素，有任何想法可以提供，感謝)
+                </p>
+        </div>
+    </div>
+
+        <div id="lobby" style="display: block;">
+
+            <h1 class="title">1A2B遊戲</h1>
+
+            <div class="introduce">
+                <h2>遊戲規則說明:</h2>
+                <p>1A2B是一款經典的邏輯推理遊戲！玩家需要在有限次數內，透過不斷猜測與提示「A」與「B」的結果，找出電腦隨機設定的四位不重複數字。</p>
+                <p>「A」代表數字與位置皆正確，「B」則代表數字正確但位置錯誤。</p>
+                <p>看似簡單卻充滿挑戰，你能在最少步數內猜出正確答案嗎？</p>
+            </div>
+
+            <button id="start">讓我們開始遊戲吧!</button>
+
+        </div>
+
+        <div class="game" id="main" style="display: none;">
+            <!-- 希望可以留一個區塊給record，來存放資料 -->
+            <div class="hint" id="record"></div>
+            <input type="number" id="userInput" placeholder="請輸入你認為的四位整數數字">
+            <button id="send">送出</button>
+
+        </div>
+
+        <!-- 成功了，就彈出顯示框 -->
+        <div id="successPopup">
+            <div class="popup-box">
+                <h2>🎉 恭喜答對！</h2>
+                <div id="time"></div>
+                <p id="answerText"></p>
+                <button id="restart">再玩一次</button>
+            </div>
+        </div>
+        <!-- 新增結束 -->
+        <footer>© 2025 lafa ｜ 所有內容皆屬作者所有</footer>
+    </body>
+
+    <script>
+        function $(q){
+            return document.querySelector(q)
+        }
+
+        var start = $('#start');
+        var lobby = $('#lobby');
+        var receive = $('#send');
+        var userInput = $('#userInput');
+        var main = $('#main');
+        var record = $('#record');
+        var welcomePopup = $('#welcomePopup');
+        var closeWelcome = $('#closeWelcome');
+
+        // 彈窗相關元素
+        var costtime = $('#time')
+        var popup = $('#successPopup');
+        var restart = $('#restart');
+        var answerText = $('#answerText');
+        //  新增結束end
+
+        var answer = [];
+        var times;
+
+        // 預設顯示歡迎彈窗，隱藏大廳
+    window.onload = function() {
+        lobby.style.display = "none"; // 先隱藏大廳
+        welcomePopup.classList.remove("hidden"); // 顯示彈窗
+    };
+
+    // 按下關閉後 → 關閉彈窗、顯示大廳
+    closeWelcome.onclick = function() {
+        welcomePopup.classList.add("hidden");
+        setTimeout(() => {
+            lobby.style.display = "block";
+        }, 400); // 給淡出動畫時間
+    };
+
+        function initiator(){
+
+            answer = [];
+            times = 0;
+
+            
+            while(answer.length < 4){
+                let randomNum = Math.floor(Math.random() * 10);
+
+                if(!answer.includes(randomNum)){
+                    answer.push(randomNum);
+                }
+            }
+
+            record.innerText = "";
+
+            console.log(answer);
+        }
+
+        function inputcheck(){
+            let inputInt = $('#userInput').value.trim(); //learn : trim:保留前後一個空白字元(包括0)
+            console.log(inputInt);
+            let intValue = parseInt(inputInt);
+            let inputArray = [0,0,0,0];
+            // 檢查長度
+            if (!/^\d{4}$/.test(inputInt)) {
+                alert("輸入錯誤，請輸入四位整數！");
+                $('#userInput').value = "";
+                return;
+            }
+            while(true){
+
+                //check user input vaild or not
+                while(true){
+                    if(inputInt/1000 >= 10){
+                        alert("輸入錯誤，請重新輸入一個四位整數字");
+                        $('#userInput').value = "";
+                        return;}                        
+                    else if(intValue!=inputInt){
+                        alert("輸入錯誤，請重新輸入一個四位整數字");
+                        $('#userInput').value = "";
+                        return;
+                    }
+
+                //make input -> array (help us to check the answer)
+                inputArray[0] = parseInt(inputInt/1000);
+                inputArray[1] = parseInt((inputInt-inputArray[0]*1000)/100);
+                inputArray[2] = parseInt((inputInt-inputArray[0]*1000-inputArray[1]*100)/10);
+                inputArray[3] = parseInt(inputInt%10);
+                break;
+                }
+                for(i=0;i<=2;i++){
+                    for(j=0;j<=3;j++){
+                        if(i!=j){
+                            if(inputArray[i]==inputArray[j]){
+                                alert("輸入錯誤，請重新輸入一個四位皆不同的整數");
+                                $('#userInput').value = "";
+                                return;
+                            }
+                        }
+                    }
+                }
+                console.log(inputArray);
+                $('#userInput').value = "";
+                let a = 0;
+                let b = 0;
+                for(i=0;i<=3;i++){
+                    for(j=0;j<=3;j++){
+                        if(i==j){
+                            if(inputArray[i]==answer[j]){
+                                a++;
+                            }
+                        }else{
+                            if(inputArray[i]==answer[j]){
+                                b++;
+                            }
+                        }
+                        
+                    }
+                }
+                times = times+1;
+
+                // beta ii從 alert 改為顯示彈窗
+                if(a==4){
+                    answerText.textContent = "正確答案是：" + answer.join('');
+                    costtime.innerText = "你總共花費了"+times+"次。"
+                    popup.classList.add("active");
+                    return;
+                }
+                //  修改結束
+
+                document.getElementById('record').innerHTML += inputInt + ":" + a + "A" + b + "B<br>";
+                answercheck();
+                return;
+            }
+        }
+
+        function answercheck(){
+            // 預留功能
+        }
+
+        start.onclick = function(){
+            initiator();
+            lobby.style.display = "none";
+            main.style.display = "block";
+            userInput.focus(); 
+        }
+
+        receive.onclick = function(){
+            inputcheck();
+        }
+
+        // let Enter send (enter 送出資料)
+        userInput.addEventListener("keypress", function(e){
+            if(e.key === "Enter") inputcheck();
+        });
+
+        // beta ii 新增：重新開始按鈕
+        restart.onclick = function(){
+            popup.classList.remove("active");
+            main.style.display = "none";
+            lobby.style.display = "block";
+            initiator();
+        };
+    </script>
+</html>
